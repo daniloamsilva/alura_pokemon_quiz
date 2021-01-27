@@ -23,6 +23,17 @@ const Widget = styled.div`
   }
 `;
 
+Widget.Image = styled.img`
+  width: 250px;
+  height: 250px;
+  object-fit: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+
+  filter: brightness(0);
+`
+
 Widget.Header = styled.header`
   display: flex;
   justify-content: flex-start;
