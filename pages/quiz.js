@@ -24,6 +24,25 @@ function LoadingWidget() {
 }
 
 function QuestionWidget({ question, onSubmit }) {
+  
+  function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+  
+    while (0 !== currentIndex) {
+  
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  
+    return array;
+  }
+
+  question.alternatives = shuffle(question.alternatives);
+
   return (
     <Widget>
       <Widget.Header>
@@ -41,53 +60,19 @@ function QuestionWidget({ question, onSubmit }) {
             onSubmit();
           }}
         >
-          <Widget.Topic
-            as="label"
-            htmlFor="alternative1"
-          >
-            <input
-              id="alternative1"
-              name="question"
-              type="radio"
-            />
-            {question.alternative1.charAt(0).toUpperCase() + question.alternative1.slice(1)}
-          </Widget.Topic>
-
-          <Widget.Topic
-            as="label"
-            htmlFor="alternative2"
-          >
-            <input
-              id="alternative2"
-              name="question"
-              type="radio"
-            />
-            {question.alternative2.charAt(0).toUpperCase() + question.alternative2.slice(1)}
-          </Widget.Topic>
-
-          <Widget.Topic
-            as="label"
-            htmlFor="alternative3"
-          >
-            <input
-              id="alternative3"
-              name="question"
-              type="radio"
-            />
-            {question.alternative3.charAt(0).toUpperCase() + question.alternative3.slice(1)}
-          </Widget.Topic>
-
-          <Widget.Topic
-            as="label"
-            htmlFor="alternative4"
-          >
-            <input
-              id="alternative4"
-              name="question"
-              type="radio"
-            />
-            {question.alternative4.charAt(0).toUpperCase() + question.alternative4.slice(1)}
-          </Widget.Topic>
+          {question.alternatives.map((alternative, index) => (
+            <Widget.Topic
+              as="label"
+              htmlFor={`alternative${index}`}
+            >
+              <input
+                id={`alternative${index}`}
+                name="question"
+                type="radio"
+              />
+              {alternative.charAt(0).toUpperCase() + alternative.slice(1)}
+            </Widget.Topic>
+          ))}
           
           <Button type="submit">
             Confirmar
@@ -127,21 +112,21 @@ export default function QuizPage() {
         image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon1.data.id}.png`,
         title: 'Quem é esse Pokemon?',
         answer: pokemon1.data.name,
-        alternative1: pokemon1.data.name,
-        alternative2: pokemon2.data.name,
-        alternative3: pokemon3.data.name,
-        alternative4: pokemon4.data.name
+        alternatives: [
+          pokemon1.data.name,
+          pokemon2.data.name,
+          pokemon3.data.name,
+          pokemon4.data.name
+        ]
       }
 
       console.log(question);
   
       setCurrentQuestion(question);
-  
+      setScreenState(screenStates.QUIZ);
     }
 
     handleSortPokemon(array);
-
-    setScreenState(screenStates.QUIZ);
   }, []);
 
   function handleSubmitQuiz() {
