@@ -1,87 +1,14 @@
 import { useEffect, useState } from 'react';
 
-import Widget from '../src/components/Widget';
 import QuizLogo from '../src/components/QuizLogo';
 import QuizBackground from '../src/components/QuizBackground';
 import QuizContainer from '../src/components/QuizContainer';
-import Button from '../src/components/Button';
+import QuestionWidget from '../src/components/QuestionWidget';
+import LoadingWidget from '../src/components/LoadingWidget';
+import ResultWidget from '../src/components/ResultWidget';
 
 import db from '../db.json';
 import api from '../src/services/api';
-
-function LoadingWidget() {
-  return (
-    <Widget>
-      <Widget.Header>
-        Carregando...
-      </Widget.Header>
-
-      <Widget.Content>
-        [Desafio do Loading]
-      </Widget.Content>
-    </Widget>
-  );
-}
-
-function QuestionWidget({ question, onSubmit }) {
-  
-  function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-  
-    while (0 !== currentIndex) {
-  
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-  
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-  
-    return array;
-  }
-
-  question.alternatives = shuffle(question.alternatives);
-
-  return (
-    <Widget>
-      <Widget.Header>
-        <h3>
-          {question.title}
-        </h3>
-      </Widget.Header>
-
-      <Widget.Image src={question.image} />
-
-      <Widget.Content>
-        <form
-          onSubmit={(infosDoEvento) => {
-            infosDoEvento.preventDefault();
-            onSubmit();
-          }}
-        >
-          {question.alternatives.map((alternative, index) => (
-            <Widget.Topic
-              as="label"
-              htmlFor={`alternative${index}`}
-            >
-              <input
-                id={`alternative${index}`}
-                name="question"
-                type="radio"
-              />
-              {alternative.charAt(0).toUpperCase() + alternative.slice(1)}
-            </Widget.Topic>
-          ))}
-          
-          <Button type="submit">
-            Confirmar
-          </Button>
-        </form>
-      </Widget.Content>
-    </Widget>
-  );
-}
 
 const screenStates = {
   QUIZ: 'QUIZ',
@@ -92,12 +19,33 @@ const screenStates = {
 export default function QuizPage() {
   const [screenState, setScreenState] = useState(screenStates.LOADING);
   const [currentQuestion, setCurrentQuestion] = useState({});
+  const [selectedAlternative, setSelectedAlternative] = useState();
+  const [isQuestionsSubmited, setIsQuestionsSubmited] = useState(false);
+  const [points, setPoint] = useState(0);
+
+  const isCorrect = selectedAlternative === currentQuestion.answer;
 
   useEffect(() => {
     let array = [];
     for (let i = 0; i < 4; i++){
       const random_number = Math.floor(Math.random() * 151 + 1)
       if(array.indexOf(random_number) == -1) array.push(random_number);
+    }
+
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+    
+      while (0 !== currentIndex) {
+    
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+    
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+    
+      return array;
     }
 
     async function handleSortPokemon(array) {
@@ -120,21 +68,28 @@ export default function QuizPage() {
         ]
       }
 
-      console.log(question);
-  
       setCurrentQuestion(question);
+      question.alternatives = shuffle(question.alternatives);
       setScreenState(screenStates.QUIZ);
     }
 
-    handleSortPokemon(array);
-  }, []);
+    if(screenState == screenStates.LOADING){
+      handleSortPokemon(array);
+    }
+  }, [screenState]);
 
   function handleSubmitQuiz() {
-    const nextQuestion = questionIndex + 1;
-    if (nextQuestion < totalQuestions) {
-      setCurrentQuestion(nextQuestion);
+    setIsQuestionsSubmited(true);
+
+    if(isCorrect){
+      setPoint(points + 1);
+      setTimeout(() => {
+        setScreenState(screenStates.LOADING);
+        setSelectedAlternative();
+        setIsQuestionsSubmited(false);
+      }, 3 * 1000)
     } else {
-      setScreenState(screenStates.RESULT);
+      setTimeout(() => setScreenState(screenStates.RESULT), 3 * 1000);
     }
   }
 
@@ -146,12 +101,20 @@ export default function QuizPage() {
           <QuestionWidget
             question={currentQuestion}
             onSubmit={handleSubmitQuiz}
+            selectedAlternative={selectedAlternative}
+            setSelectedAlternative={setSelectedAlternative}
+            screenState={screenState}
+            isCorrect={isCorrect}
+            isQuestionsSubmited={isQuestionsSubmited}
+            setIsQuestionsSubmited={setIsQuestionsSubmited}
+            points={points}
+            setPoint={setPoint}
           />
         )}
 
         {screenState === screenStates.LOADING && <LoadingWidget />}
 
-        {screenState === screenStates.RESULT && <div>Você acertou X questões, parabéns!</div>}
+        {screenState === screenStates.RESULT && <ResultWidget points={points} />}
       </QuizContainer>
     </QuizBackground>
   );
