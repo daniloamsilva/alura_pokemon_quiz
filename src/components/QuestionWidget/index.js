@@ -2,10 +2,9 @@ import Button from '../Button';
 import Widget from '../Widget';
 import AlternativesForm from '../AlternativeForm';
 import styled from 'styled-components';
-import { useEffect } from 'react';
-// import StatusBar from '../StatusBar';
 
 const Status = styled.p`
+  padding-bottom: 0;
   text-align: center;
 `;
 
