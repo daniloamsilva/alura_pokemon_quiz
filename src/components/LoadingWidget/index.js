@@ -8,7 +8,7 @@ const LoadingWidget = () => {
       </Widget.Header>
 
       <Widget.Content>
-        [Desafio do Loading]
+        <p>Vai ser rápido... (ou não)</p>
       </Widget.Content>
     </Widget>
   );
