@@ -87,7 +87,7 @@ export default function QuizPage() {
         setScreenState(screenStates.LOADING);
         setSelectedAlternative();
         setIsQuestionsSubmited(false);
-      }, 3 * 1000)
+      }, 2 * 1000)
     } else {
       setTimeout(() => setScreenState(screenStates.RESULT), 3 * 1000);
     }

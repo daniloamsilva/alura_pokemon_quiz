@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { shade } from 'polished';
+
+import db from '../../../db.json';
 
 const AlternativesForm = styled.form`
   label {
@@ -16,6 +19,11 @@ const AlternativesForm = styled.form`
     &:focus {
       opacity: 1;
     } 
+
+    &:hover {
+      background: ${shade(0.2, db.theme.colors.secondary)};
+      cursor: pointer;
+    }
   }
   button {
     margin-top: 24px;

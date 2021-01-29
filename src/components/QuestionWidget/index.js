@@ -1,8 +1,11 @@
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 
 import Button from '../Button';
 import Widget from '../Widget';
 import AlternativesForm from '../AlternativeForm';
+import BackLinkArrow from '../BackLinkArrow';
+
 import db from '../../../db.json';
 
 const StatusPoints = styled.p`
@@ -32,6 +35,10 @@ const StatusWrong = styled.p`
   padding: 10px;
 `;
 
+const QuizBackground = styled.div`
+  background-image: ${db.quiz_bg};
+`;
+
 const QuestionWidget = (
   { 
     question, 
@@ -53,14 +60,39 @@ const QuestionWidget = (
   return (
     <Widget>
       <Widget.Header>
+        <BackLinkArrow href={'/'} />
         <h3>
           {question.title}
         </h3>
       </Widget.Header>
 
-      <Widget.Image src={question.image} id="question_image" />
+      <QuizBackground>
+        <Widget.Image
+          as={motion.img}
+          transition={{ delay: 0, duration: 2 }}
+          variants={{
+            show: { opacity: 1 },
+            hidden: { opacity: 0 },
+          }}
+          initial="hidden"
+          animate="show"
+          src={question.image} 
+          id="question_image" 
+        />
+      </QuizBackground>
 
-      { !isQuestionsSubmited && <StatusPoints>Você está com {points} ponto{points == 1 ? '' : 's'}!</StatusPoints> }
+      { !isQuestionsSubmited && 
+        <StatusPoints
+          as={motion.p}
+          transition={{ delay: 0, duration: 0.8 }}
+          variants={{
+            show: { opacity: 1, y: '0' },
+            hidden: { opacity: 0, y: '100%' },
+          }}
+          initial="hidden"
+          animate="show"
+        >Você está com {points} ponto{points == 1 ? '' : 's'}!</StatusPoints> 
+      }
       { isQuestionsSubmited && isCorrect && <StatusSuccess>Resposta correta!</StatusSuccess> }
       { isQuestionsSubmited && !isCorrect && <StatusWrong>Resposta errada. Era o {question.answer}!</StatusWrong> }
 
@@ -71,7 +103,21 @@ const QuestionWidget = (
 
             return (
               <Widget.Topic
-                as="label"
+                as={motion.label}
+                transition={{ delay: index - (0.9 * index), duration: 0.5 }}
+                variants={
+                  index % 2 == 0 ?
+                  {
+                  show: { opacity: 1, x: '0' },
+                  hidden: { opacity: 0, x: '-150%' },
+                  } :
+                  {
+                  show: { opacity: 1, x: '0' },
+                  hidden: { opacity: 0, x: '150%' },
+                  }
+                }
+                initial="hidden"
+                animate="show"
                 key={`alternative${index}`}
                 htmlFor={`alternative${index}`}
                 data-selected={selectedAlternative === alternative}
@@ -89,7 +135,17 @@ const QuestionWidget = (
             )
           })}
           
-          <Button type="submit" disabled={!selectedAlternative || isQuestionsSubmited}>
+          <Button 
+            as={motion.button}
+            transition={{ delay: 0, duration: 0.8 }}
+            variants={{
+              show: { opacity: 1 },
+              hidden: { opacity: 0 },
+            }}
+            initial="hidden"
+            animate="show"
+            type="submit" 
+            disabled={!selectedAlternative || isQuestionsSubmited}>
             Confirmar
           </Button>
         </AlternativesForm>
