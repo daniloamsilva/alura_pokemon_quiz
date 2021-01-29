@@ -1,4 +1,16 @@
+import styled from 'styled-components';
+
 import Widget from '../Widget';
+import db from '../../../db.json';
+
+const Image = styled.img`
+  width: 250px;
+  height: 250px;
+  object-fit: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+`
 
 const LoadingWidget = () => {
   return (
@@ -8,7 +20,7 @@ const LoadingWidget = () => {
       </Widget.Header>
 
       <Widget.Content>
-        <p>Vai ser rápido... (ou não)</p>
+        <Image src={db.loading} alt="Carregando..."/>
       </Widget.Content>
     </Widget>
   );
