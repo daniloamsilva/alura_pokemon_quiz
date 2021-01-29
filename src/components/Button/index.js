@@ -20,6 +20,11 @@ const Button = styled.button`
     background: ${shade(0.2, db.theme.colors.secondary)};
     cursor: pointer;
   }
+
+  &:disabled {
+    background: ${shade(0.7, db.theme.colors.secondary)};
+    cursor: default;
+  }
 `;
 
 export default Button;

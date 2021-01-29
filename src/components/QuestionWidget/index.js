@@ -89,7 +89,7 @@ const QuestionWidget = (
             )
           })}
           
-          <Button type="submit" disabled={!selectedAlternative}>
+          <Button type="submit" disabled={!selectedAlternative || isQuestionsSubmited}>
             Confirmar
           </Button>
         </AlternativesForm>
