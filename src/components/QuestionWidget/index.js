@@ -1,11 +1,35 @@
+import styled from 'styled-components';
+
 import Button from '../Button';
 import Widget from '../Widget';
 import AlternativesForm from '../AlternativeForm';
-import styled from 'styled-components';
+import db from '../../../db.json';
 
-const Status = styled.p`
+const StatusPoints = styled.p`
   padding-bottom: 0;
   text-align: center;
+  background-color: ${db.theme.colors.secondary};
+  margin: 0 35px;
+  border-radius: 5px;
+  padding: 10px;
+`;
+
+const StatusSuccess = styled.p`
+  padding-bottom: 0;
+  text-align: center;
+  background-color: ${db.theme.colors.success};
+  margin: 0 35px;
+  border-radius: 5px;
+  padding: 10px;
+`;
+
+const StatusWrong = styled.p`
+  padding-bottom: 0;
+  text-align: center;
+  background-color: ${db.theme.colors.wrong};
+  margin: 0 35px;
+  border-radius: 5px;
+  padding: 10px;
 `;
 
 const QuestionWidget = (
@@ -36,9 +60,9 @@ const QuestionWidget = (
 
       <Widget.Image src={question.image} id="question_image" />
 
-      { !isQuestionsSubmited && <Status>Você está com {points} ponto{points == 1 ? '' : 's'}!</Status> }
-      { isQuestionsSubmited && isCorrect && <Status>Resposta correta!</Status> }
-      { isQuestionsSubmited && !isCorrect && <Status>Resposta errada. Era o {question.answer}!</Status> }
+      { !isQuestionsSubmited && <StatusPoints>Você está com {points} ponto{points == 1 ? '' : 's'}!</StatusPoints> }
+      { isQuestionsSubmited && isCorrect && <StatusSuccess>Resposta correta!</StatusSuccess> }
+      { isQuestionsSubmited && !isCorrect && <StatusWrong>Resposta errada. Era o {question.answer}!</StatusWrong> }
 
       <Widget.Content>
         <AlternativesForm onSubmit={handleSubmit} >
