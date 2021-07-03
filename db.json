@@ -4,14 +4,14 @@
   "title": "Quiz Pokemon da Imerção React Alura",
   "description": "Teste os seus conhecimentos sobre Pokemon.",
   "badges": [
-    "https://cdn.bulbagarden.net/upload/thumb/d/dd/Boulder_Badge.png/50px-Boulder_Badge.png",
-    "https://cdn.bulbagarden.net/upload/thumb/9/9c/Cascade_Badge.png/50px-Cascade_Badge.png",
-    "https://cdn.bulbagarden.net/upload/thumb/a/a6/Thunder_Badge.png/50px-Thunder_Badge.png",
-    "https://cdn.bulbagarden.net/upload/thumb/b/b5/Rainbow_Badge.png/50px-Rainbow_Badge.png",
-    "https://cdn.bulbagarden.net/upload/thumb/7/7d/Soul_Badge.png/50px-Soul_Badge.png",
-    "https://cdn.bulbagarden.net/upload/thumb/6/6b/Marsh_Badge.png/50px-Marsh_Badge.png",
-    "https://cdn.bulbagarden.net/upload/thumb/1/12/Volcano_Badge.png/50px-Volcano_Badge.png",
-    "https://cdn.bulbagarden.net/upload/thumb/7/78/Earth_Badge.png/50px-Earth_Badge.png"
+    "https://cdn2.bulbagarden.net/upload/d/dd/Boulder_Badge.png",
+    "https://cdn2.bulbagarden.net/upload/thumb/9/9c/Cascade_Badge.png/900px-Cascade_Badge.png",
+    "https://cdn2.bulbagarden.net/upload/thumb/a/a6/Thunder_Badge.png/900px-Thunder_Badge.png",
+    "https://cdn2.bulbagarden.net/upload/b/b5/Rainbow_Badge.png",
+    "https://cdn2.bulbagarden.net/upload/thumb/7/7d/Soul_Badge.png/900px-Soul_Badge.png",
+    "https://cdn2.bulbagarden.net/upload/thumb/6/6b/Marsh_Badge.png/900px-Marsh_Badge.png",
+    "https://cdn2.bulbagarden.net/upload/1/12/Volcano_Badge.png",
+    "https://cdn2.bulbagarden.net/upload/7/78/Earth_Badge.png"
   ],
   "external": [
     ""

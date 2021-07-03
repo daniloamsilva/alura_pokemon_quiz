@@ -28,8 +28,7 @@ Widget.Image = styled.img`
   height: 250px;
   object-fit: center;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 20px auto;
 
   filter: brightness(0);
 `

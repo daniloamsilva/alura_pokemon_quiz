@@ -57,6 +57,10 @@ const QuestionWidget = (
     onSubmit();
   }
 
+  function firstLetterUpperCase(str) {
+    return str[0].toUpperCase() + str.substr(1);
+  }
+
   return (
     <Widget>
       <Widget.Header>
@@ -94,7 +98,7 @@ const QuestionWidget = (
         >Você está com {points} ponto{points == 1 ? '' : 's'}!</StatusPoints> 
       }
       { isQuestionsSubmited && isCorrect && <StatusSuccess>Resposta correta!</StatusSuccess> }
-      { isQuestionsSubmited && !isCorrect && <StatusWrong>Resposta errada. Era o {question.answer}!</StatusWrong> }
+      { isQuestionsSubmited && !isCorrect && <StatusWrong>Resposta errada. Era o {firstLetterUpperCase(question.answer)}!</StatusWrong> }
 
       <Widget.Content>
         <AlternativesForm onSubmit={handleSubmit} >

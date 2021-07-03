@@ -8,6 +8,7 @@ import BackLinkArrow from '../BackLinkArrow';
 import db from '../../../db.json';
 
 const Badge = styled.img`
+  width: 60px;
   margin: 15px 10px;
 `;
 

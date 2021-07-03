@@ -8,7 +8,6 @@ import LoadingWidget from '../src/components/LoadingWidget';
 import ResultWidget from '../src/components/ResultWidget';
 
 import db from '../db.json';
-import api from '../src/services/api';
 
 const screenStates = {
   QUIZ: 'QUIZ',
@@ -26,14 +25,35 @@ export default function QuizPage() {
   const isCorrect = selectedAlternative === currentQuestion.answer;
 
   useEffect(() => {
-    let array = [];
-    for (let i = 0; i < 4; i++){
-      const random_number = Math.floor(Math.random() * 151 + 1)
-      if(array.indexOf(random_number) == -1) array.push(random_number);
+    async function handleSortPokemon() {
+      const pokemonList = JSON.parse(localStorage.getItem('@AluraPokemonQuiz:pokemonList'));
+
+      let random_ids = [];
+
+      while(random_ids.length < 4){
+        const random_number = Math.floor(Math.random() * 151);
+        if(random_ids.indexOf(random_number) == -1) random_ids.push(random_number);
+      }
+      
+      const question = {
+        image: `https://pokeres.bastionbot.org/images/pokemon/${random_ids[0] + 1}.png`,
+        title: 'Quem é esse Pokemon?',
+        answer: pokemonList[random_ids[0]].name,
+        alternatives: [
+          pokemonList[random_ids[0]].name,
+          pokemonList[random_ids[1]].name,
+          pokemonList[random_ids[2]].name,
+          pokemonList[random_ids[3]].name
+        ]
+      }
+
+      question.alternatives = shuffle(question.alternatives);
+      setCurrentQuestion(question);
+      setScreenState(screenStates.QUIZ);
     }
 
     function shuffle(array) {
-      var currentIndex = array.length, temporaryValue, randomIndex;
+      let currentIndex = array.length, temporaryValue, randomIndex;
     
       while (0 !== currentIndex) {
     
@@ -48,33 +68,8 @@ export default function QuizPage() {
       return array;
     }
 
-    async function handleSortPokemon(array) {
-      const [pokemon1, pokemon2, pokemon3, pokemon4] = await Promise.all([
-        api.get(`pokemon/${array[0]}`),
-        api.get(`pokemon/${array[1]}`),
-        api.get(`pokemon/${array[2]}`),
-        api.get(`pokemon/${array[3]}`),
-      ])
-      
-      const question = {
-        image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon1.data.id}.png`,
-        title: 'Quem é esse Pokemon?',
-        answer: pokemon1.data.name,
-        alternatives: [
-          pokemon1.data.name,
-          pokemon2.data.name,
-          pokemon3.data.name,
-          pokemon4.data.name
-        ]
-      }
-
-      setCurrentQuestion(question);
-      question.alternatives = shuffle(question.alternatives);
-      setScreenState(screenStates.QUIZ);
-    }
-
     if(screenState == screenStates.LOADING){
-      handleSortPokemon(array);
+      handleSortPokemon();
     }
   }, [screenState]);
 

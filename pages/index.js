@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 import db from '../db.json';
@@ -11,6 +11,8 @@ import Footer from '../src/components/Footer';
 import GitHubCorner from '../src/components/GitHubCorner';
 import Input from '../src/components/Input';
 import Button from '../src/components/Button';
+
+import api from '../src/services/api';
 
 export const QuizContainer = styled.div`
   width: 100%;
@@ -24,6 +26,19 @@ export const QuizContainer = styled.div`
 `;
 
 export default function Home() {
+  useEffect(() => {
+    handlePokemonList();
+
+    async function handlePokemonList() {
+      if(!localStorage.getItem('@AluraPokemonQuiz:pokemonList')){
+        const response = await Promise.resolve(api.get('pokemon?limit=151'));
+        const pokemonList = response.data.results;
+        console.log(pokemonList);
+        localStorage.setItem('@AluraPokemonQuiz:pokemonList', JSON.stringify(pokemonList));
+      }
+    }
+  }, []);
+
   const router = useRouter();
   const [name, setName] = useState('');
 
