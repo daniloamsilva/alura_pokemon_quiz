@@ -36,7 +36,7 @@ export default function QuizPage() {
       }
       
       const question = {
-        image: `https://pokeres.bastionbot.org/images/pokemon/${random_ids[0] + 1}.png`,
+        image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${random_ids[0] + 1}.png`,
         title: 'Quem é esse Pokemon?',
         answer: pokemonList[random_ids[0]].name,
         alternatives: [
